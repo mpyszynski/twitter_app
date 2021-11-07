@@ -1,0 +1,12 @@
+version: "3"
+
+services:
+  tweets-streamer:
+    build: ./docker/golang
+    container_name: tweets-streamer
+    working_dir: /backend
+    entrypoint: modd -f /conf/modd.conf
+    volumes:
+      - ./backend:/backend
+      - ./docker/golang/conf:/conf
+      - ./docker/golang/secrets.env:/backend/secrets.env
