@@ -8,16 +8,13 @@ import (
 
 type Config struct {
 	TwitterAuth *TwitterAuth
-	AppID string `mapstructure:"app_id"`
-	AppKey string `mapstructure:"app_key"`
-	AppSecret string `mapstructure:"app_secret"`
-	AppToken string `mapstructure:"app_token"`
 }
 
-func LoadConfig() (*Config, error) {
-	viper.AddConfigPath(".")
+func LoadConfig(path, fileName string) (*Config, error) {
+	viper.AddConfigPath(path)
 	viper.SetConfigType("env")
-	viper.SetConfigName("secrets")
+	viper.SetConfigName(fileName)
+	viper.AutomaticEnv()
 	if err := viper.ReadInConfig(); err != nil {
 		return nil, err
 	}
