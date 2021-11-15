@@ -4,24 +4,25 @@ import "github.com/spf13/viper"
 
 type TwitterAuth struct {
 	AppID string `mapstructure:"app_id"`
-	AppKey string `mapstructure:"app_key"`
-	AppSecret string `mapstructure:"app_secret"`
-	AppToken string `mapstructure:"app_token"`
+	ApiKey string `mapstructure:"api_key"`
+	ApiSecret string `mapstructure:"api_secret"`
+	ApiToken string `mapstructure:"api_token"`
+	ApiTokenSecret string `mapstructure:"api_token_secret"`
 }
 
 func getTwitterConfig() (*TwitterAuth, error) {
 	var config *TwitterAuth
 	for _, envVar := range []string{
 		"app_id",
-		"app_key",
-		"app_secret",
-		"app_token",
+		"api_key",
+		"api_secret",
+		"api_token",
+		"api_token_secret",
 	} {
 			if err := viper.BindEnv(envVar); err != nil {
 				return nil, err
 			}
 	}
-	viper.AutomaticEnv()
 	err := viper.Unmarshal(&config)
 	if err != nil {
 		return nil, err

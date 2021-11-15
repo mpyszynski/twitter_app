@@ -10,3 +10,5 @@ services:
       - ./backend:/backend
       - ./docker/golang/conf:/conf
       - ./docker/golang/secrets.env:/backend/secrets.env
+    ports:
+      - "3001:3001"

@@ -4,7 +4,7 @@ ENV MOD_VERSION 0.8
 ENV MOD_CHECKSUM 65d5b5410d0b11dec3427d9363426add67bde60ddbd8277f5794c981af4b8ad7
 
 RUN wget -O m.tgz https://github.com/cortesi/modd/releases/download/v${MOD_VERSION}/modd-${MOD_VERSION}-linux64.tgz && \
-    echo "${MOD_CHECKSUM} m.tgz" | sha256sum -c - && \
+    router "${MOD_CHECKSUM} m.tgz" | sha256sum -c - && \
     tar xvfz m.tgz && \
     mv modd-${MOD_VERSION}-linux64/modd /usr/local/bin && \
     chmod +x /usr/local/bin/modd && \
