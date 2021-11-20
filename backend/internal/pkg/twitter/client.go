@@ -8,7 +8,7 @@ import (
 )
 
 type TweetsRetriever interface {
-	StartStream(hashTag string, msgChannel chan models.Message) error
+	StartStream(hashTag string, msgChannel chan<- models.Message) error
 }
 
 type Client struct {
@@ -42,7 +42,7 @@ func getTweet(tweet interface{}, demux twitter.SwitchDemux) models.Message {
 	return message
 }
 
-func (c *Client) StartStream(hashTag string, msgChannel chan models.Message) error {
+func (c *Client) StartStream(hashTag string, msgChannel chan<- models.Message) error {
 	params := &twitter.StreamFilterParams{
 		Track:         []string{hashTag},
 		StallWarnings: twitter.Bool(true),
@@ -55,5 +55,6 @@ func (c *Client) StartStream(hashTag string, msgChannel chan models.Message) err
 		tweet := getTweet(message, c.tweetParser)
 		msgChannel <- tweet
 	}
+	close(msgChannel)
 	return nil
 }
