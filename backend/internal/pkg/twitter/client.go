@@ -7,15 +7,22 @@ import (
 	"github.com/mpyszynski/twitter_app/internal/models"
 )
 
+// TweetsRetriever holds all methods to interact with Twitter API
 type TweetsRetriever interface {
-	StartStream(hashTag string, msgChannel chan models.Message) error
+	StartStream(hashTag string, msgChannel chan<- models.Message) error
 }
 
+type twitterStream interface {
+	Filter(params *twitter.StreamFilterParams) (*twitter.Stream, error)
+}
+
+// Client used to interact with Twitter API
 type Client struct {
-	stream      *twitter.StreamService
+	stream      twitterStream
 	tweetParser twitter.SwitchDemux
 }
 
+// New creates new twitter client
 func New(auth *env.TwitterAuth) Client {
 	config := oauth1.NewConfig(auth.ApiKey, auth.ApiSecret)
 	token := oauth1.NewToken(auth.ApiToken, auth.ApiTokenSecret)
@@ -42,7 +49,8 @@ func getTweet(tweet interface{}, demux twitter.SwitchDemux) models.Message {
 	return message
 }
 
-func (c *Client) StartStream(hashTag string, msgChannel chan models.Message) error {
+// StartStream retrieves tweets with given keyword
+func (c *Client) StartStream(hashTag string, msgChannel chan<- models.Message) error {
 	params := &twitter.StreamFilterParams{
 		Track:         []string{hashTag},
 		StallWarnings: twitter.Bool(true),
@@ -55,5 +63,6 @@ func (c *Client) StartStream(hashTag string, msgChannel chan models.Message) err
 		tweet := getTweet(message, c.tweetParser)
 		msgChannel <- tweet
 	}
+	close(msgChannel)
 	return nil
 }

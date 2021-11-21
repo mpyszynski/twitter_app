@@ -2,6 +2,7 @@ package env
 
 import "github.com/spf13/viper"
 
+// TwitterAuth holds all necessary data for authentication with Twitter API
 type TwitterAuth struct {
 	AppID string `mapstructure:"app_id"`
 	ApiKey string `mapstructure:"api_key"`
