@@ -6,10 +6,12 @@ import (
 	"github.com/mpyszynski/twitter_app/internal/pkg/twitter"
 )
 
+// Client for echo API
 type Client struct {
 	echo *echo.Echo
 }
 
+// New creates new echo client
 func New(twitterClient twitter.Client) *Client {
 	e := echo.New()
 
@@ -28,6 +30,7 @@ func New(twitterClient twitter.Client) *Client {
 	}
 }
 
+// Start echo REST API
 func (c Client) Start(port string) error {
 	if err := c.echo.Start(port); err != nil {
 		return err

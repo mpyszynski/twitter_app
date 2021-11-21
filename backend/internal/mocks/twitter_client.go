@@ -1,6 +1,7 @@
 package mocks
 
 import (
+	"fmt"
 	"github.com/mpyszynski/twitter_app/internal/models"
 	"time"
 )
@@ -28,6 +29,7 @@ func (mt *MockTwitterClient) StartStream(hashTag string, msgChannel chan<- model
 	}
 	for _, msg := range messages {
 		msgChannel <- msg
+		fmt.Println(msg)
 		time.Sleep(500 * time.Millisecond)
 	}
 	close(msgChannel)

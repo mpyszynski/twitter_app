@@ -12,3 +12,5 @@ services:
       - ./docker/golang/secrets.env:/backend/secrets.env
     ports:
       - "3001:3001"
+    environment:
+      PORT: ":3001"
